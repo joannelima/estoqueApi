@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="br.com.pulse.mapper.ItensPedidosMapper">
+    <resultMap id="resultItens" type="br.com.pulse.model.ItensPedidos">
+        <result column="id" property="id"/>
+        <result column="quantidade_produtos" property="quantidadeProdutos"/>
+        <association property="pedidoEstoque" column="pedido_estoque" resultMap="br.com.pulse.mapper.PedidoEstoqueMapper.resultPedidoEstoque"/>
+        <association property="produto" column="fk_produto" resultMap="br.com.pulse.mapper.ProdutoMapper.resultProdutos"/>
+
+    </resultMap>
+
+    <insert id="inserirItem">
+        insert into
+            itens_pedido (quantidade_produtos, fk_pedido_estoque, fk_produto)
+            values(
+             #{itens.quantidadeProdutos}, #{itens.pedidoEstoque.id}, #{itens.produto.id})
+    </insert>
+</mapper>

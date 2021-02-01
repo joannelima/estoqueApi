@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="br.com.pulse.mapper.PedidoEstoqueMapper">
+    <resultMap id="resultPedidoEstoque" type="br.com.pulse.model.PedidoEstoque">
+        <result column="id" property="id"/>
+        <result column="tipo_venda" property="tipoVenda"/>
+        <association property="filial" column="fk_filial" resultMap="br.com.pulse.mapper.FilialMapper.resultFilial"/>
+    </resultMap>
+
+    <sql id="colsPedidoEstoque">
+        id,
+        fk_filial,
+        tipo_venda
+    </sql>
+
+    <insert id="save" keyProperty="pedido.id" useGeneratedKeys="true" keyColumn="id">
+        insert into
+            pedido_estoque(fk_filial, tipo_venda)
+        values
+        (#{pedido.filial.id}, #{pedido.tipoVenda});
+    </insert>
+
+    <select id="getById" resultMap="resultPedidoEstoque">
+        select
+        <include refid="colsPedidoEstoque"></include>
+        from
+        pedido_estoque
+        where id = #{id};
+    </select>
+
+</mapper>

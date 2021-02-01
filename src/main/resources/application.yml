@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: dev
+
+---
+# Coloque aqui suas configurações de Desenvolvimento
+spring:
+  profiles: prod
+
+---
+# Coloque aqui suas configurações de Homologação
+spring:
+  profiles: homo
+
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/teste
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver

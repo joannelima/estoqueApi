@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="br.com.pulse.mapper.EstoqueMapper">
+    <resultMap id="resultEstoque" type="br.com.pulse.model.Estoque">
+        <result property="id" column="id"/>
+        <result property="quantidadeProdutos" column="quantidade_produtos"/>
+        <association property="produto" column="fk_produto" resultMap="br.com.pulse.mapper.ProdutoMapper.resultProdutos"/>
+        <association property="filial" column="fk_filial" resultMap="br.com.pulse.mapper.FilialMapper.resultFilial"/>
+    </resultMap>
+
+    <resultMap id="qtdProdutos" type="br.com.pulse.model.Estoque">
+        <result property="quantidadeProdutos" column="e.quantidade_produtos"/>
+        <association property="produto" column="fk_produto" resultMap="br.com.pulse.mapper.ProdutoMapper.resultProdutos"/>
+        <association property="filial" column="fk_filial" resultMap="br.com.pulse.mapper.FilialMapper.resultFilial"/>
+    </resultMap>
+
+    <sql id="colsEstoque">
+        id,
+        fk_filial,
+        fk_produto,
+        quantidade_produtos
+    </sql>
+
+    <select id="getQuantidadeProdutos" resultType="br.com.pulse.model.Estoque" resultMap="qtdProdutos">
+        select
+        <include refid="colsEstoque"></include>
+        from estoque e
+            inner join produto p
+            on e.fk_produto = p.id
+        where e.fk_filial = #{filial.id} and e.fk_produto = #{produto.id};
+    </select>
+
+    <select id="buscar" resultType="br.com.pulse.model.Estoque" resultMap="resultEstoque">
+        select
+          <include refid="colsEstoque"></include>
+           from estoque e
+        where e.fk_filial = #{filial.id} and e.fk_produto = #{produto.id};
+    </select>
+
+    <update id="updateEstoque">
+        update estoque
+        set quantidade_produtos = #{novaqtd}
+        where id = #{estoque.id};
+    </update>
+
+</mapper>

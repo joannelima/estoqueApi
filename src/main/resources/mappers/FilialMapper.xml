@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="br.com.pulse.mapper.FilialMapper">
+        <resultMap id="resultFilial" type="br.com.pulse.model.Filial">
+            <result property="id" column="id"/>
+            <result property="descricao" column="descricao"/>
+        </resultMap>
+
+
+    <select id="buscar" resultType="br.com.pulse.model.Filial">
+        select id, descricao from filial where id = #{filialId};
+    </select>
+
+    <select id="buscarPorPedidoEstoque" resultType="br.com.pulse.model.Filial">
+        select f.id as id, f.descricao as descricao
+        from pedido_estoque pe
+        inner join filial f on pe.fk_filial = f.id
+        where pe.id = #{idPedidoEstoque};
+    </select>
+
+</mapper>
